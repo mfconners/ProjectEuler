@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>ProjectEuler</AssemblyName>
+    <RootNamespace>ProjectEuler</RootNamespace>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
+    <ProjectReference Include="..\ProjectEuler.Problems\ProjectEuler.Problems.csproj" />
+  </ItemGroup>
+</Project>
