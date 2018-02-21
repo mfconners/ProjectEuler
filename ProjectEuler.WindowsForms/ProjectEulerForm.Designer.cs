@@ -24,24 +24,8 @@ namespace ProjectEuler
 				components.Dispose();
 			}
 			base.Dispose(disposing);
+
 			_manageWorkers.Wait();
-
-			while (threads.Count > 0)
-			{
-				foreach (Thread thread in threads)
-				{
-					if (thread != null && thread.IsAlive)
-					{
-						thread.Abort();
-					}
-					else
-					{
-						threads.Remove(thread);
-						break;
-					}
-				}
-			}
-
 			_manageWorkers.Dispose();
 		}
 
