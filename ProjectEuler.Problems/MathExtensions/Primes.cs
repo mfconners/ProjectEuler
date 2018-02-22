@@ -79,6 +79,7 @@ namespace ProjectEuler.MathExtensions
 				{
 					_primePumpThread = new Thread(PumpThePrimes);
 					_primePumpThread.Name = "Prime Pumper Thread";
+					_primePumpThread.IsBackground = true;
 					_primePumpThread.Priority = ThreadPriority.AboveNormal;
 					_primePumpThread.Start();
 				}

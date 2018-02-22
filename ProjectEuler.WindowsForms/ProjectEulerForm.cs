@@ -78,9 +78,10 @@ namespace ProjectEuler
 			while (threads.Count < Environment.ProcessorCount || threads.Count < 1)
 			{
 				Thread problem_solver = new Thread(problemSolver_DoWork);
+				problem_solver.IsBackground = true;
+				problem_solver.Priority = ThreadPriority.BelowNormal;
 				threads.Add(problem_solver);
 
-				problem_solver.Priority = ThreadPriority.BelowNormal;
 				_start = DateTime.Now;
 				problem_solver.Start();
 			}
@@ -231,8 +232,9 @@ namespace ProjectEuler
 			if (RowsQueue.Count > 0)
 			{
 				Thread problem_solver = new Thread(problemSolver_DoWork);
-				threads.Add(problem_solver);
+				problem_solver.IsBackground = true;
 				problem_solver.Priority = ThreadPriority.BelowNormal;
+				threads.Add(problem_solver);
 				problem_solver.Start();
 			}
 
