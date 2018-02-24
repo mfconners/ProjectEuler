@@ -178,7 +178,7 @@ namespace ProjectEuler.Problems
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private int CountCompositeFactors(DistinctPrimeComposite factor1, DistinctPrimeComposite factor2, Dictionary<DistinctPrimeComposite, long> counts, int drop_max_prime = int.MaxValue)
+		private int CountCompositeFactors(DistinctPrimeComposite factor1, DistinctPrimeComposite factor2, Dictionary<DistinctPrimeComposite, long> counts)
 		{
 			if (counts == null)
 				throw new ArgumentNullException("counts");
@@ -195,44 +195,33 @@ namespace ProjectEuler.Problems
 			int max_prime = 0;
 
 			DistinctPrimeComposite dpc_multiple = DistinctPrimeComposite.Multiply(factor1, factor2);
-			if (dpc_multiple.max_prime_factor < drop_max_prime)
-			{
-				if (dpc_multiple.max_prime_factor > max_prime)
-					max_prime = dpc_multiple.max_prime_factor;
 
-				if (!counts.ContainsKey(dpc_multiple))
-					counts.Add(dpc_multiple, 1);
-				else
-					++counts[dpc_multiple];
-			}
+			if (dpc_multiple.max_prime_factor > max_prime)
+				max_prime = dpc_multiple.max_prime_factor;
+			if (!counts.ContainsKey(dpc_multiple))
+				counts.Add(dpc_multiple, 1);
+			else
+				++counts[dpc_multiple];
 
-			if (factor1.max_prime_factor < drop_max_prime)
-			{
-				if (factor1.max_prime_factor > max_prime)
-					max_prime = factor1.max_prime_factor;
+			if (factor1.max_prime_factor > max_prime)
+				max_prime = factor1.max_prime_factor;
+			if (!counts.ContainsKey(factor1))
+				counts.Add(factor1, 1);
+			else
+				++counts[factor1];
 
-				if (!counts.ContainsKey(factor1))
-					counts.Add(factor1, 1);
-				else
-					++counts[factor1];
-			}
-
-			if (factor2.max_prime_factor < drop_max_prime)
-			{
-				if (factor2.max_prime_factor > max_prime)
-					max_prime = factor2.max_prime_factor;
-
-				if (!counts.ContainsKey(factor2))
-					counts.Add(factor2, 1);
-				else
-					++counts[factor2];
-			}
+			if (factor2.max_prime_factor > max_prime)
+				max_prime = factor2.max_prime_factor;
+			if (!counts.ContainsKey(factor2))
+				counts.Add(factor2, 1);
+			else
+				++counts[factor2];
 
 			return max_prime;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private int CountCompositeCounts(Dictionary<DistinctPrimeComposite, long> old_counts1, Dictionary<DistinctPrimeComposite, long> old_counts2, Dictionary<DistinctPrimeComposite, long> counts, int drop_max_prime = int.MaxValue)
+		private int CountCompositeCounts(Dictionary<DistinctPrimeComposite, long> old_counts1, Dictionary<DistinctPrimeComposite, long> old_counts2, Dictionary<DistinctPrimeComposite, long> counts, int max_prime_to_keep = int.MaxValue)
 		{
 			if (counts == null)
 				throw new ArgumentNullException("counts");
@@ -248,7 +237,7 @@ namespace ProjectEuler.Problems
 				foreach (DistinctPrimeComposite old_factor2 in old_counts2.Keys)
 				{
 					DistinctPrimeComposite new_factor = DistinctPrimeComposite.Multiply(old_factor1, old_factor2);
-					if (new_factor.max_prime_factor < drop_max_prime)
+					if (new_factor.max_prime_factor <= max_prime_to_keep)
 					{
 						if (new_factor.max_prime_factor > max_prime)
 							max_prime = new_factor.max_prime_factor;
@@ -270,7 +259,7 @@ namespace ProjectEuler.Problems
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private int CountCompositeFactorAndCount(DistinctPrimeComposite factor, Dictionary<DistinctPrimeComposite, long> old_counts, Dictionary<DistinctPrimeComposite, long> counts, int drop_max_prime = int.MaxValue)
+		private int CountCompositeFactorAndCount(DistinctPrimeComposite factor, Dictionary<DistinctPrimeComposite, long> old_counts, Dictionary<DistinctPrimeComposite, long> counts, int max_prime_to_keep = int.MaxValue)
 		{
 			if (counts == null)
 				throw new ArgumentNullException("counts");
@@ -283,7 +272,7 @@ namespace ProjectEuler.Problems
 
 			foreach (DistinctPrimeComposite old_factor in old_counts.Keys)
 			{
-				if (old_factor.max_prime_factor < drop_max_prime)
+				if (old_factor.max_prime_factor <= max_prime_to_keep)
 				{
 					if (old_factor.max_prime_factor > max_prime)
 						max_prime = old_factor.max_prime_factor;
@@ -300,7 +289,7 @@ namespace ProjectEuler.Problems
 				}
 
 				DistinctPrimeComposite new_factor = DistinctPrimeComposite.Multiply(factor, old_factor);
-				if (new_factor.max_prime_factor < drop_max_prime)
+				if (new_factor.max_prime_factor <= max_prime_to_keep)
 				{
 					if (new_factor.max_prime_factor > max_prime)
 						max_prime = new_factor.max_prime_factor;
@@ -320,7 +309,7 @@ namespace ProjectEuler.Problems
 			return max_prime;
 		}
 
-		private int DropMaxPrime(Dictionary<DistinctPrimeComposite, long> old_counts, Dictionary<DistinctPrimeComposite, long> counts, int drop_max_prime)
+		private int DropMaxPrime(Dictionary<DistinctPrimeComposite, long> old_counts, Dictionary<DistinctPrimeComposite, long> counts, int max_prime_to_keep)
 		{
 			if (old_counts == null)
 				throw new ArgumentNullException("old_counts");
@@ -331,7 +320,7 @@ namespace ProjectEuler.Problems
 
 			foreach (DistinctPrimeComposite factor in old_counts.Keys)
 			{
-				if (factor.max_prime_factor < drop_max_prime)
+				if (factor.max_prime_factor <= max_prime_to_keep)
 				{
 					counts.Add(factor, old_counts[factor]);
 					if (factor.max_prime_factor > max_prime)
@@ -344,13 +333,19 @@ namespace ProjectEuler.Problems
 
 		protected override string CalculateSolution()
 		{
+			long result_count = 1;
 			List<Queue<DistinctPrimeComposite>> max_prime_factors = new List<Queue<DistinctPrimeComposite>>(Enumerable.Repeat((Queue<DistinctPrimeComposite>)null, c_max + 1));
-			List<Queue<Dictionary<DistinctPrimeComposite, long>>> max_prime_factor_counts = new List<Queue<Dictionary<DistinctPrimeComposite, long>>>(Enumerable.Repeat((Queue<Dictionary<DistinctPrimeComposite, long>>)null, c_max + 1));
 
 			for (int c = c_min; c <= c_max; ++c)
 			{
 				DistinctPrimeComposite new_dpc = DistinctPrimeComposite.GetDistinctPrimeComposite(c);
-				if (c + new_dpc.max_prime_factor <= c_max || c - new_dpc.max_prime_factor >= c_min)
+				if (new_dpc.max_prime_factor == 1)
+				{
+					result_count *= 2;
+					if (result_count >= modulo_base)
+						result_count -= modulo_base;
+				}
+				else if (c + new_dpc.max_prime_factor <= c_max || c - new_dpc.max_prime_factor >= c_min)
 				{
 					if (max_prime_factors[new_dpc.max_prime_factor] == null)
 					{
@@ -360,171 +355,126 @@ namespace ProjectEuler.Problems
 				}
 			}
 
-			Stack<Dictionary<DistinctPrimeComposite, long>> empty_counts = new Stack<Dictionary<DistinctPrimeComposite, long>>();
+			Dictionary<DistinctPrimeComposite, long> empty_counts = null;
+			Queue<KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>> composite_counts = new Queue<KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>>();
+			List<int> max_prime_count = new List<int>();
+			int max_prime_to_keep = 1;
 
-			for (int max_factor = max_prime_factors.Count - 1; max_factor > 1; --max_factor)
 			{
-				if (max_prime_factors[max_factor] != null)
+				DistinctPrimeComposite dpc1 = null, dpc2 = null;
+				int max_prime = max_prime_factors.Count - 1;
+				while (max_prime > 0)
 				{
-					while (max_prime_factors[max_factor].Count > 2 || (max_prime_factors[max_factor].Count > 1 && max_prime_factor_counts[max_factor] != null && max_prime_factor_counts[max_factor].Count > 0))
+					if (max_prime_factors[max_prime] == null)
 					{
-						DistinctPrimeComposite factor1 = max_prime_factors[max_factor].Dequeue();
-						DistinctPrimeComposite factor2 = max_prime_factors[max_factor].Dequeue();
-
-						Dictionary<DistinctPrimeComposite, long> counts;
-						if (empty_counts.Count > 0)
-							counts = empty_counts.Pop();
-						else
-							counts = new Dictionary<DistinctPrimeComposite, long>();
-
-						CountCompositeFactors(factor1, factor2, counts);
-						if (max_prime_factor_counts[max_factor] == null)
-						{
-							max_prime_factor_counts[max_factor] = new Queue<Dictionary<DistinctPrimeComposite, long>>();
-						}
-						max_prime_factor_counts[max_factor].Enqueue(counts);
+						--max_prime;
 					}
-
-					if (max_prime_factors[max_factor].Count > 1)
+					else if (max_prime_factors[max_prime].Count == 0)
 					{
-						DistinctPrimeComposite factor1 = max_prime_factors[max_factor].Dequeue();
-						DistinctPrimeComposite factor2 = max_prime_factors[max_factor].Dequeue();
-
-						Dictionary<DistinctPrimeComposite, long> counts;
-						if (empty_counts.Count > 0)
-							counts = empty_counts.Pop();
-						else
-							counts = new Dictionary<DistinctPrimeComposite, long>();
-
-						int max_prime = CountCompositeFactors(factor1, factor2, counts, max_factor);
-						if (max_prime_factor_counts[max_prime] == null)
-						{
-							max_prime_factor_counts[max_prime] = new Queue<Dictionary<DistinctPrimeComposite, long>>();
-						}
-						max_prime_factor_counts[max_prime].Enqueue(counts);
+						max_prime_factors[max_prime] = null;
+						--max_prime;
 					}
-
-					if (max_prime_factors[max_factor].Count > 0 && max_prime_factor_counts[max_factor] != null && max_prime_factor_counts[max_factor].Count > 0)
+					else if (dpc1 == null)
 					{
-						Dictionary<DistinctPrimeComposite, long> new_counts;
-						if (empty_counts.Count > 0)
-							new_counts = empty_counts.Pop();
-						else
-							new_counts = new Dictionary<DistinctPrimeComposite, long>();
-
-						Dictionary<DistinctPrimeComposite, long> counts = max_prime_factor_counts[max_factor].Dequeue();
-
-						if (max_prime_factor_counts[max_factor].Count > 0)
-						{
-							CountCompositeFactorAndCount(max_prime_factors[max_factor].Dequeue(), counts, new_counts);
-							max_prime_factor_counts[max_factor].Enqueue(new_counts);
-						}
-						else
-						{
-							int max_prime = CountCompositeFactorAndCount(max_prime_factors[max_factor].Dequeue(), counts, new_counts, max_factor);
-							if (max_prime_factor_counts[max_prime] == null)
-							{
-								max_prime_factor_counts[max_prime] = new Queue<Dictionary<DistinctPrimeComposite, long>>();
-							}
-							max_prime_factor_counts[max_prime].Enqueue(new_counts);
-						}
-
-						counts.Clear();
-						empty_counts.Push(counts);
+						dpc1 = max_prime_factors[max_prime].Dequeue();
 					}
+					else
+					{
+						dpc2 = max_prime_factors[max_prime].Dequeue();
 
-					max_prime_factors[max_factor] = null;
+						Dictionary<DistinctPrimeComposite, long> counts = new Dictionary<DistinctPrimeComposite, long>();
+						int real_max_prime = CountCompositeFactors(dpc1, dpc2, counts);
+
+						composite_counts.Enqueue(new KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>(real_max_prime, counts));
+
+						while (max_prime_count.Count <= real_max_prime)
+							max_prime_count.Add(0);
+						++max_prime_count[real_max_prime];
+						if (max_prime > max_prime_to_keep)
+							max_prime_to_keep = max_prime;
+
+						dpc1 = dpc2 = null;
+					}
 				}
 
-				if (max_prime_factor_counts[max_factor] != null)
+				max_prime_factors = null;
+
+				if (dpc1 != null)
 				{
-					while (max_prime_factor_counts[max_factor].Count > 2)
-					{
-						Dictionary<DistinctPrimeComposite, long> counts1 = max_prime_factor_counts[max_factor].Dequeue();
-						Dictionary<DistinctPrimeComposite, long> counts2 = max_prime_factor_counts[max_factor].Dequeue();
+					KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>> old_counts = composite_counts.Dequeue();
+					--max_prime_count[old_counts.Key];
 
-						Dictionary<DistinctPrimeComposite, long> new_counts;
-						if (empty_counts.Count > 0)
-							new_counts = empty_counts.Pop();
-						else
-							new_counts = new Dictionary<DistinctPrimeComposite, long>();
+					while (max_prime_count[max_prime_to_keep] <= 0)
+						--max_prime_to_keep;
 
-						CountCompositeCounts(counts1, counts2, new_counts);
-						max_prime_factor_counts[max_factor].Enqueue(new_counts);
-						if (empty_counts.Count < 10)
-						{
-							counts1.Clear();
-							empty_counts.Push(counts1);
-							counts2.Clear();
-							empty_counts.Push(counts2);
-						}
-					}
 
-					if (max_prime_factor_counts[max_factor].Count == 2)
-					{
-						Dictionary<DistinctPrimeComposite, long> counts1 = max_prime_factor_counts[max_factor].Dequeue();
-						Dictionary<DistinctPrimeComposite, long> counts2 = max_prime_factor_counts[max_factor].Dequeue();
+					Dictionary<DistinctPrimeComposite, long> counts = new Dictionary<DistinctPrimeComposite, long>();
+					int real_max_prime = CountCompositeFactorAndCount(dpc1, old_counts.Value, counts, max_prime_to_keep);
 
-						Dictionary<DistinctPrimeComposite, long> new_counts;
-						if (empty_counts.Count > 0)
-							new_counts = empty_counts.Pop();
-						else
-							new_counts = new Dictionary<DistinctPrimeComposite, long>();
+					composite_counts.Enqueue(new KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>(real_max_prime, counts));
 
-						int max_prime = CountCompositeCounts(counts1, counts2, new_counts, max_factor);
-						if (max_prime_factor_counts[max_prime] == null)
-						{
-							max_prime_factor_counts[max_prime] = new Queue<Dictionary<DistinctPrimeComposite, long>>();
-						}
-						max_prime_factor_counts[max_prime].Enqueue(new_counts);
+					++max_prime_count[real_max_prime];
 
-						counts1.Clear();
-						empty_counts.Push(counts1);
-						counts2.Clear();
-						empty_counts.Push(counts2);
-					}
-
-					if (max_prime_factor_counts[max_factor].Count == 1)
-					{
-						Dictionary<DistinctPrimeComposite, long> counts = max_prime_factor_counts[max_factor].Dequeue();
-						Dictionary<DistinctPrimeComposite, long> new_counts;
-						if (empty_counts.Count > 0)
-							new_counts = empty_counts.Pop();
-						else
-							new_counts = new Dictionary<DistinctPrimeComposite, long>();
-
-						int max_prime = DropMaxPrime(counts, new_counts, max_factor);
-
-						if (max_prime_factor_counts[max_prime] == null)
-						{
-							max_prime_factor_counts[max_prime] = new Queue<Dictionary<DistinctPrimeComposite, long>>();
-						}
-						max_prime_factor_counts[max_prime].Enqueue(new_counts);
-
-						counts.Clear();
-						empty_counts.Push(counts);
-					}
-
-					max_prime_factor_counts[max_factor] = null;
+					empty_counts = old_counts.Value;
+					empty_counts.Clear();
+				}
+				else
+				{
+					empty_counts = new Dictionary<DistinctPrimeComposite, long>();
 				}
 			}
 
-			empty_counts = null;
-
-			long result_count = 1;
-			while (max_prime_factors[1].Count > 0)
+			while (composite_counts.Count > 1)
 			{
-				DistinctPrimeComposite factor = max_prime_factors[1].Dequeue();
-				result_count *= 2;
-				result_count %= modulo_base;
-			}
-			max_prime_factors = null;
+				KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>> old_counts1 = composite_counts.Dequeue();
+				--max_prime_count[old_counts1.Key];
+				KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>> old_counts2 = composite_counts.Dequeue();
+				--max_prime_count[old_counts2.Key];
 
-			while (max_prime_factor_counts[1].Count > 0)
-			{
-				Dictionary<DistinctPrimeComposite, long> counts = max_prime_factor_counts[1].Dequeue();
-				result_count *= counts[DistinctPrimeComposite.RootFactor];
-				result_count %= modulo_base;
+				while (max_prime_count[max_prime_to_keep] <= 0)
+					--max_prime_to_keep;
+
+
+				Dictionary<DistinctPrimeComposite, long> counts = empty_counts;
+
+				int real_max_prime = CountCompositeCounts(old_counts1.Value, old_counts2.Value, counts, max_prime_to_keep);
+
+				while (real_max_prime > 1 && composite_counts.Count > 0 && (counts.Count <= old_counts1.Value.Count || counts.Count <= old_counts2.Value.Count))
+				{
+					if (old_counts1.Value.Count > old_counts2.Value.Count)
+						empty_counts = old_counts1.Value;
+					else
+						empty_counts = old_counts2.Value;
+					empty_counts.Clear();
+
+					old_counts1 = new KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>(real_max_prime, counts);
+					old_counts2 = composite_counts.Dequeue();
+					--max_prime_count[old_counts2.Key];
+
+					while (max_prime_count[max_prime_to_keep] <= 0)
+						--max_prime_to_keep;
+
+					counts = empty_counts;
+
+					real_max_prime = CountCompositeCounts(old_counts1.Value, old_counts2.Value, counts, max_prime_to_keep);
+				}
+
+				if (real_max_prime > 1)
+				{
+					composite_counts.Enqueue(new KeyValuePair<int, Dictionary<DistinctPrimeComposite, long>>(real_max_prime, counts));
+					++max_prime_count[real_max_prime];
+				}
+				else
+				{
+					result_count *= counts[DistinctPrimeComposite.RootFactor];
+					result_count %= modulo_base;
+				}
+
+				if (old_counts1.Value.Count > old_counts2.Value.Count)
+					empty_counts = old_counts1.Value;
+				else
+					empty_counts = old_counts2.Value;
+				empty_counts.Clear();
 			}
 
 			return (result_count - 1).ToString();
