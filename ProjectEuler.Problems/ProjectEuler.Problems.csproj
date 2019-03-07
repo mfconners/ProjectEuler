@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>net47</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Problems\Problem000.cs" />
+    <Compile Remove="Problems\Problem619.cs" />
     <None Include="Problems\Problem000.cs" />
+    <None Include="Problems\Problem619.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WindowsBase" />
