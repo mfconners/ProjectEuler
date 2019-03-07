@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
-using ProjectEuler.MathExtensions;
 using ProjectEuler.Problems;
 
 namespace ProjectEuler
