@@ -4,7 +4,7 @@ using ProjectEuler.MathExtensions;
 
 namespace ProjectEuler.Problems
 {
-	class Problem000 : Problem
+	class Problem642 : Problem
 	{
 		//public override string CorrectAnswer { get { return "???"; } }
 
