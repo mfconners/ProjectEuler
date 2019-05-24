@@ -23,20 +23,25 @@ namespace ProjectEuler.Problems
 			diceProbability.Add(0.0);
 			diceProbability.Add(1.0);
 
+			List<double> nextDiceProbability = new List<double>();
+			List<double> rollProbability = new List<double>();
+			List<double> nextRollProbability = new List<double>();
+
 			while (remainingDice.Count > 0)
 			{
 				int maxDice = diceProbability.Count - 1;
 				int nextDiceSides = remainingDice.Dequeue();
 				double diceSideRollProbability = 1.0 / nextDiceSides;
-				List<double> nextDiceProbability = new List<double>(maxDice * nextDiceSides + 1);
-				while (nextDiceProbability.Count < nextDiceProbability.Capacity)
+
+				while (nextDiceProbability.Count < maxDice * nextDiceSides + 1)
 					nextDiceProbability.Add(0.0);
-				List<double> rollProbability = new List<double>();
+
+				rollProbability.Clear();
 				rollProbability.Add(1.0);
+
 				for (int numDice = 1; numDice <= maxDice; ++numDice)
 				{
-					List<double> nextRollProbability = new List<double>(numDice * nextDiceSides + 1);
-					while (nextRollProbability.Count < nextRollProbability.Capacity)
+					while (nextRollProbability.Count < numDice * nextDiceSides + 1)
 						nextRollProbability.Add(0.0);
 
 					for (int diceRoll = 0; diceRoll < rollProbability.Count; ++diceRoll)
@@ -48,12 +53,25 @@ namespace ProjectEuler.Problems
 						}
 					}
 
-					rollProbability = nextRollProbability;
+					{
+						List<double> temp;
+						temp = rollProbability;
+						rollProbability = nextRollProbability;
+						nextRollProbability = temp;
+						nextRollProbability.Clear();
+					}
 
 					for (int diceRoll = 0; diceRoll < rollProbability.Count; ++diceRoll)
 						nextDiceProbability[diceRoll] += diceProbability[numDice] * rollProbability[diceRoll];
 				}
-				diceProbability = nextDiceProbability;
+
+				{
+					List<double> temp;
+					temp = diceProbability;
+					diceProbability = nextDiceProbability;
+					nextDiceProbability = temp;
+					nextDiceProbability.Clear();
+				}
 			}
 
 			double mean = 0.0;

@@ -9,7 +9,7 @@ namespace ProjectEuler.MathExtensions
 	{
 		#region Global properties for managing the size of the _primes cache.
 		static private ReaderWriterLockSlim _accessPrimes = new ReaderWriterLockSlim();
-		static private List<int> _primes = CreateIntListWithOneValue(2);
+		static private List<int> _primes = CreateIntListWithOneValue(2, 10000000);
 		static private List<int> _primeTesters = CreateIntListWithOneValue(1);
 		static private int _interval = 2;
 		static private int _nextInterval = 6;
@@ -63,9 +63,12 @@ namespace ProjectEuler.MathExtensions
 		static private int _cachedMin, _cachedMax;
 		#endregion
 
-		private static List<int> CreateIntListWithOneValue(int n)
+		private static List<int> CreateIntListWithOneValue(int n, int capacity = 0)
 		{
 			List<int> list = new List<int>();
+			if (capacity > 0)
+				list = new List<int>(capacity);
+
 			list.Add(n);
 			return list;
 		}
@@ -175,7 +178,7 @@ namespace ProjectEuler.MathExtensions
 					&& Is_Miller_Rabin_ProbablePrime(5, d, r, n)
 					&& Is_Miller_Rabin_ProbablePrime(7, d, r, n);
 			}
-			else if(n < 4759123141)
+			else if (n < 4759123141)
 			{
 				return Is_Miller_Rabin_ProbablePrime(2, d, r, n)
 					&& Is_Miller_Rabin_ProbablePrime(7, d, r, n)
@@ -710,7 +713,7 @@ namespace ProjectEuler.MathExtensions
 			}
 
 			if (_threadPrimes == null)
-				_threadPrimes = new List<int>(50000);
+				_threadPrimes = new List<int>(5000000);
 
 			if (_threadPrimes.Capacity <= _primes.Count)
 				_threadPrimes.Capacity = _primes.Count * 5 / 4;

@@ -14,9 +14,12 @@ namespace ProjectEuler.Problems
 		{
 			HashSet<int> products = new HashSet<int>();
 
+			HashSet<int> digits = new HashSet<int>();
+			HashSet<int> digitsUnion = new HashSet<int>();
+
 			for (int multiplicand = 1; multiplicand * multiplicand * (multiplicand + 1) * (multiplicand + 1) <= 999999999; ++multiplicand)
 			{
-				HashSet<int> digits = new HashSet<int>();
+				digits.Clear();
 				bool goodDigits = true;
 				for (int remainingDigits = multiplicand; goodDigits && remainingDigits > 0; remainingDigits /= 10)
 				{
@@ -35,7 +38,8 @@ namespace ProjectEuler.Problems
 						if (products.Contains(product))
 							continue;
 
-						HashSet<int> digitsUnion = new HashSet<int>(digits);
+						digitsUnion.Clear();
+						digitsUnion.UnionWith(digits);
 
 						for (int remainingDigits = multiplier; goodDigits && remainingDigits > 0; remainingDigits /= 10)
 						{

@@ -30,12 +30,17 @@ namespace ProjectEuler.Problems
 			for (int startCol = 0; startCol < 1000; ++startCol)
 				lastRow.Add(startCol, new Dictionary<int, Int64>());
 
+			Dictionary<int, Dictionary<int, Int64>> thisRow = new Dictionary<int, Dictionary<int, Int64>>();
+
 			for (int row = 999; row >= 0; --row)
 			{
-				Dictionary<int, Dictionary<int, Int64>> thisRow = new Dictionary<int, Dictionary<int, Int64>>();
 				for (int startCol = 0; startCol <= row; ++startCol)
 				{
-					thisRow.Add(startCol, new Dictionary<int, Int64>());
+					if (thisRow.Count <= startCol)
+						thisRow.Add(startCol, new Dictionary<int, Int64>());
+					else
+						thisRow[startCol].Clear();
+
 					Int64 sum = 0;
 					for (int endCol = startCol; endCol <= row; ++endCol)
 					{
@@ -52,7 +57,10 @@ namespace ProjectEuler.Problems
 						}
 					}
 				}
+
+				Dictionary<int, Dictionary<int, Int64>> tempRow = lastRow;
 				lastRow = thisRow;
+				thisRow = tempRow;
 			}
 
 			return minSum.ToString();
