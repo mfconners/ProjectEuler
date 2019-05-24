@@ -7,6 +7,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem060 : Problem
 	{
+		// Slow: 40 seconds
 		public override string CorrectAnswer { get { return "26033"; } }
 
 		private const int search_size = 5;
@@ -21,6 +22,7 @@ namespace ProjectEuler.Problems
 
 			int min_sum = 0;
 
+			// TODO Garbage Collection: Allocating at a high rate?
 			if (overlaps.Count >= search_size - layer)
 			{
 				foreach (int overlap in overlaps)

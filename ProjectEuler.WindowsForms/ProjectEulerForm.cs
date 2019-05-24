@@ -112,7 +112,6 @@ namespace ProjectEuler
 			//RowsQueue.Enqueue(ProblemsRows[439]);
 
 			TotalQueueCount -= RowsQueue.Count;
-			//for (int row = ProblemsDataGridView.Rows.Count - 1; row >= 0; --row)
 			for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
 				RowsQueue.Enqueue(row);
 			TotalQueueCount += RowsQueue.Count;

@@ -11,6 +11,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem196 : Problem
 	{
+		// Slow: >8 minutes
 		#region Units of work
 		private class WorkUnit
 		{
@@ -130,6 +131,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxLow1 && firstNeighbor >= minLow1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet + 2;
 				if (secondNeighbor <= maxRow && secondNeighbor >= minRow)
@@ -148,6 +150,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxLow1 && firstNeighbor >= minLow1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet - 2 * row + 2;
 				if (secondNeighbor <= maxLow2 && secondNeighbor >= minLow2)
@@ -166,6 +169,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxHigh1 && firstNeighbor >= minHigh1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet + 2 * row + 2;
 				if (secondNeighbor <= maxHigh2 && secondNeighbor >= minHigh2)
@@ -200,6 +204,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxHigh1 && firstNeighbor >= minHigh1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet + 2 * row + 2;
 				if (secondNeighbor <= maxHigh2 && secondNeighbor >= minHigh2)
@@ -218,6 +223,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxHigh1 && firstNeighbor >= minHigh1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet + 2 * row;
 				if (secondNeighbor <= maxHigh2 && secondNeighbor >= minHigh2)
@@ -236,6 +242,7 @@ namespace ProjectEuler.Problems
 			if (firstNeighbor <= maxLow1 && firstNeighbor >= minLow1)
 			{
 				neighbors[testTriplet].Add(firstNeighbor);
+				// TODO Garbage Collection: Allocating at a high rate?
 				neighbors.Add(firstNeighbor, new HashSet<Int64>());
 				secondNeighbor = testTriplet - 2 * row + 2;
 				if (secondNeighbor <= maxLow2 && secondNeighbor >= minLow2)
@@ -255,6 +262,7 @@ namespace ProjectEuler.Problems
 		private static void FillNeighborhood(Dictionary<Int64, HashSet<Int64>> neighbors, long testTriplet, long row)
 		{
 			neighbors.Clear();
+			// TODO Garbage Collection: Allocating at a high rate?
 			neighbors.Add(testTriplet, new HashSet<long>());
 
 			if (row % 2 == 0)

@@ -10,6 +10,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem614 : Problem
 	{
+		// Slow: >1 hour
 		public override string CorrectAnswer { get { return "130694090"; } }
 
 		const int max_total = 10000000;

@@ -9,6 +9,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem357 : Problem
 	{
+		// Slow: >2 minutes
 		public override string CorrectAnswer { get { return "1739023853137"; } }
 
 		protected override string CalculateSolution()

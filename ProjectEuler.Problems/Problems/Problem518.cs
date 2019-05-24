@@ -9,10 +9,12 @@ namespace ProjectEuler.Problems
 {
 	class Problem518 : Problem
 	{
+		// Slow: >13 minutes
 		public override string CorrectAnswer { get { return "100315739184392"; } }
 
 		static private List<long> GetFactors(long b)
 		{
+			// TODO Garbage Collection: Allocating at a high rate?
 			List<long> primeFactors = new List<long>();
 			List<int> primeCounts = new List<int>();
 			long remainder = b + 1;
@@ -39,6 +41,7 @@ namespace ProjectEuler.Problems
 				primeCounts.Add(2);
 			}
 
+			// TODO Garbage Collection: Allocating at a high rate?
 			List<long> factors = new List<long>();
 			for (int p = 0; p < primeCounts.Count; ++p)
 			{

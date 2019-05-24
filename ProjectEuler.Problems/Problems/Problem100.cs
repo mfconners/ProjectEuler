@@ -9,6 +9,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem100 : Problem
 	{
+		// Slow: 25 seconds
 		public override string CorrectAnswer { get { return "756872327473"; } }
 
 		private const UInt64 lower32 = 0xFFFFFFFF;
@@ -91,6 +92,7 @@ namespace ProjectEuler.Problems
 					if (totalCount > 1000000000000)
 						return blueCount.ToString();
 
+					// TODO Garbage Collection: Allocating at a high rate?
 					List<Int64> newFactors = new List<Int64>();
 					for (int p = 0;
 							 blueGood && totalGood && (blue1 > 1 || blue2 > 1 || total1 > 1 || total2 > 1);

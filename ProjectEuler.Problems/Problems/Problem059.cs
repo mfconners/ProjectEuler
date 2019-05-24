@@ -8,6 +8,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem059 : Problem
 	{
+		// Slow: 2 minutes
 		public override string CorrectAnswer { get { return "107359"; } }
 
 		private static readonly char[] separators = { ',', '\r', '\n' };
@@ -25,6 +26,7 @@ namespace ProjectEuler.Problems
 			#endregion
 
 			#region "Decrypt" the message with the password...
+			// TODO Garbage Collection: Allocating strings at this rate is causing a lot of issues...
 			Dictionary<string, string> passwords = new Dictionary<string, string>();
 			for (string password = "a";
 					password[0] <= 'z';
