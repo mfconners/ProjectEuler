@@ -75,7 +75,7 @@ namespace ProjectEuler
 		{
 			_manageWorkers.Wait();
 
-			while (threads.Count < Environment.ProcessorCount || threads.Count < 1)
+			while (threads.Count < 3 * Environment.ProcessorCount / 4 || threads.Count < 1)
 			{
 				Thread problem_solver = new Thread(problemSolver_DoWork);
 				problem_solver.IsBackground = true;
@@ -93,7 +93,8 @@ namespace ProjectEuler
 		{
 			_manageWorkers.Wait();
 
-			for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
+			//for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
+			for (int row = ProblemsDataGridView.Rows.Count - 1; row >= 0; --row)
 			{
 				string correctAnswer = ProblemsDataGridView["CorrectAnswerColumn", row].Value.ToString();
 				if (string.IsNullOrEmpty(correctAnswer) || correctAnswer == Problem.SolutionUnknown)
@@ -112,7 +113,8 @@ namespace ProjectEuler
 			//RowsQueue.Enqueue(ProblemsRows[439]);
 
 			TotalQueueCount -= RowsQueue.Count;
-			for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
+			//for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
+			for (int row = ProblemsDataGridView.Rows.Count - 1; row >= 0; --row)
 				RowsQueue.Enqueue(row);
 			TotalQueueCount += RowsQueue.Count;
 
@@ -165,7 +167,7 @@ namespace ProjectEuler
 					this.ProblemsDataGridView.Rows[row].DefaultCellStyle = correctAnswerStyle;
 				}
 			}
-			
+
 			this.ProblemsDataGridView.Update();
 			this.TimeLabel.Text = Problem.TotalSolutionTime;
 		}
