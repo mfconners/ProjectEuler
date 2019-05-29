@@ -51,14 +51,17 @@ namespace ProjectEuler.Problems
 					{
 						Problem prob = (Problem)Activator.CreateInstance(possibleProblemType);
 						prob.ProblemNumber = Convert.ToInt32(prob.GetType().Name.Replace("Problem", ""));
-						if (probs.ContainsKey(prob.ProblemNumber))
-							throw new InvalidOperationException("Multiple problems with the same number: " + prob.ProblemNumber);
+						if (prob.ProblemNumber > 0)
+						{
+							if (probs.ContainsKey(prob.ProblemNumber))
+								throw new InvalidOperationException("Multiple problems with the same number: " + prob.ProblemNumber);
 
-						ProjectEulerDeserializer.ProblemMetaData meta = ProjectEulerDeserializer.ResourceProblemData.GetProblemMetaData(prob.ProblemNumber);
-						prob._name = meta.ProblemName;
-						prob._description = meta.ProblemContents;
+							ProjectEulerDeserializer.ProblemMetaData meta = ProjectEulerDeserializer.ResourceProblemData.GetProblemMetaData(prob.ProblemNumber);
+							prob._name = meta.ProblemName;
+							prob._description = meta.ProblemContents;
 
-						probs[prob.ProblemNumber] = prob;
+							probs[prob.ProblemNumber] = prob;
+						}
 					}
 				}
 			}
