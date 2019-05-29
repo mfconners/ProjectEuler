@@ -4,10 +4,6 @@
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Problems\Problem000.cs" />
-    <None Include="Problems\Problem000.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>

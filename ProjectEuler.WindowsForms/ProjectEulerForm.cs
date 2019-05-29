@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using ProjectEuler.Problems;
@@ -13,7 +9,7 @@ namespace ProjectEuler
 {
 	public partial class ProjectEulerForm : Form
 	{
-		// ###IMPLEMENT### this.ResizeEnd += new System.EventHandler(this.ProjectEulerForm_Resize);
+		// TODO this.ResizeEnd += new System.EventHandler(this.ProjectEulerForm_Resize);
 		private HashSet<Thread> threads = new HashSet<Thread>();
 		private HashSet<int> RowsBeingWorked = new HashSet<int>();
 		private Queue<int> RowsQueue = new Queue<int>();
@@ -102,19 +98,12 @@ namespace ProjectEuler
 				}
 			}
 
-			//RowsQueue.Enqueue(ProblemsRows[xxx]);
-			//RowsQueue.Enqueue(ProblemsRows[196]);
-			//RowsQueue.Enqueue(ProblemsRows[389]);
-			//RowsQueue.Enqueue(ProblemsRows[100]);
-			//RowsQueue.Enqueue(ProblemsRows[150]);
-			//RowsQueue.Enqueue(ProblemsRows[14]);
-			//RowsQueue.Enqueue(ProblemsRows[34]);
-			//RowsQueue.Enqueue(ProblemsRows[439]);
-
 			TotalQueueCount -= RowsQueue.Count;
 			//for (int row = ProblemsDataGridView.Rows.Count - 1; row >= 0; --row)
 			for (int row = 0; row < ProblemsDataGridView.Rows.Count; ++row)
+			{
 				RowsQueue.Enqueue(row);
+			}
 			TotalQueueCount += RowsQueue.Count;
 
 			_manageWorkers.Release();
@@ -166,7 +155,7 @@ namespace ProjectEuler
 					this.ProblemsDataGridView.Rows[row].DefaultCellStyle = correctAnswerStyle;
 				}
 			}
-			
+
 			this.ProblemsDataGridView.Update();
 			this.TimeLabel.Text = Problem.TotalSolutionTime;
 		}
