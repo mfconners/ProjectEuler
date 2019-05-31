@@ -9,14 +9,11 @@ namespace ProjectEuler.Problems
 {
 	class Problem518 : Problem
 	{
-		// Slow: >13 minutes
+		// Slow: >12 minutes
 		public override string CorrectAnswer { get { return "100315739184392"; } }
 
-		static private List<long> GetFactors(long b)
+		static private void GetFactors(long b, List<long> primeFactors, List<int> primeCounts, List<long> factors)
 		{
-			// TODO Garbage Collection: Allocating at a high rate?
-			List<long> primeFactors = new List<long>();
-			List<int> primeCounts = new List<int>();
 			long remainder = b + 1;
 
 			for (int p = 0, prime; (prime = Primes.GetPrime(p)) * prime <= remainder; ++p)
@@ -41,8 +38,6 @@ namespace ProjectEuler.Problems
 				primeCounts.Add(2);
 			}
 
-			// TODO Garbage Collection: Allocating at a high rate?
-			List<long> factors = new List<long>();
 			for (int p = 0; p < primeCounts.Count; ++p)
 			{
 				int factorCount = factors.Count;
@@ -69,7 +64,7 @@ namespace ProjectEuler.Problems
 				}
 			}
 
-			return factors;
+			return;
 		}
 
 		private const int n = 100000000;
@@ -78,11 +73,17 @@ namespace ProjectEuler.Problems
 		{
 			long sum = 0;
 
+			List<long> primeFactors = new List<long>();
+			List<int> primeCounts = new List<int>();
+			List<long> factors = new List<long>();
 			long b;
 			for (int p_b = 1; (b = Primes.GetPrime(p_b)) < n; ++p_b)
 			{
 				long bplus1_squared = (b + 1) * (b + 1);
-				List<long> factors = GetFactors(b);
+				primeFactors.Clear();
+				primeCounts.Clear();
+				factors.Clear();
+				GetFactors(b, primeFactors, primeCounts, factors);
 
 				foreach (long aplus1 in factors)
 				{
