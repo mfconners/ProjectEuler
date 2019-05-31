@@ -8,7 +8,6 @@ namespace ProjectEuler.Problems
 {
 	class Problem059 : Problem
 	{
-		// Slow: 2 minutes
 		public override string CorrectAnswer { get { return "107359"; } }
 
 		private static readonly char[] separators = { ',', '\r', '\n' };
@@ -28,28 +27,51 @@ namespace ProjectEuler.Problems
 			#region "Decrypt" the message with the password...
 			// TODO Garbage Collection: Allocating strings at this rate is causing a lot of issues...
 			Dictionary<string, string> passwords = new Dictionary<string, string>();
-			for (string password = "a";
-					password[0] <= 'z';
-					password = Convert.ToString((char)(password[0] + 1)))
+			List<char> password = new List<char>();
+			List<char> decrypted = new List<char>();
+
+			for (password.Add('a'); password[0] <= 'z'; ++password[0])
 			{
-				for (password = password + 'a';
-						password[1] <= 'z';
-						password = password.Substring(0, 1) + (char)(password[1] + 1))
+				password.RemoveRange(1, password.Count - 1);
+				for (password.Add('a'); password[1] <= 'z'; ++password[1])
 				{
-					for (password = password + 'a';
-							password[2] <= 'z';
-							password = password.Substring(0, 2) + (char)(password[2] + 1))
+					password.RemoveRange(2, password.Count - 2);
+					for (password.Add('a'); password[2] <= 'z'; ++password[2])
 					{
-						string decrypted = string.Empty;
+						decrypted.Clear();
 						for (int i = 0; i < characters.Count; ++i)
 						{
-							decrypted = decrypted + (char)(characters[i] ^ password[i % password.Length]);
+							decrypted.Add((char)(characters[i] ^ password[i % password.Count]));
 						}
 
-						if (decrypted.Replace("the", string.Empty).Replace("The", string.Empty) != decrypted &&
-								decrypted.Replace("that", string.Empty).Replace("That", string.Empty) != decrypted)
+						bool has_the = false, has_that = false;
+						for (int j = 0; j + 2 < decrypted.Count && (!has_the || !has_that); ++j)
 						{
-							passwords.Add(password, decrypted);
+							if (decrypted[j] == 't' || decrypted[j] == 'T')
+							{
+								if (decrypted[j + 1] == 'h')
+								{
+									has_the = has_the || decrypted[j + 2] == 'e';
+									has_that = has_that || (j + 3 < decrypted.Count && decrypted[j + 2] == 'a' && decrypted[j + 3] == 't');
+								}
+							}
+						}
+
+						if (has_the && has_that)
+						{
+							StringBuilder new_password = new StringBuilder();
+							for (int k = 0; k < password.Count; ++k)
+							{
+								new_password.Append(password[k]);
+							}
+
+							StringBuilder new_decrypted = new StringBuilder();
+							for (int k = 0; k < decrypted.Count; ++k)
+							{
+								new_decrypted.Append(decrypted[k]);
+							}
+
+							passwords.Add(new_password.ToString(), new_decrypted.ToString());
 						}
 					}
 				}
