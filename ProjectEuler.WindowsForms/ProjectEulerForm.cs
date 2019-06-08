@@ -71,7 +71,9 @@ namespace ProjectEuler
 		{
 			_manageWorkers.Wait();
 
-			while (threads.Count < 3 * Environment.ProcessorCount / 4 || threads.Count < 1)
+			//while (threads.Count < 3 * Environment.ProcessorCount / 4 || threads.Count < 1)
+			//while (threads.Count < Environment.ProcessorCount - 1 || threads.Count < 1)
+			while (threads.Count < Environment.ProcessorCount || threads.Count < 1)
 			{
 				Thread problem_solver = new Thread(problemSolver_DoWork);
 				problem_solver.IsBackground = true;

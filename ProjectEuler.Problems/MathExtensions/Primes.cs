@@ -595,17 +595,22 @@ namespace ProjectEuler.MathExtensions
 		private const int MAX_SHIFT = int.MaxValue / 2;
 		static public bool IsPrime(long primetest, bool requireExpansion = true)
 		{
+			return IsPrimeWithCache(primetest, ref _cachedMin, ref _cachedMax, requireExpansion);
+		}
+
+		static public bool IsPrimeWithCache(long primetest, ref int cachedMin, ref int cachedMax, bool requireExpansion = true)
+		{
 			if (primetest < 2)
 			{
 				return false;
 			}
 
-			if (_cachedMin < 0)
-				_cachedMin = 0;
-			if (_cachedMax <= 0)
-				_cachedMax = 1;
+			if (cachedMin < 0)
+				cachedMin = 0;
+			if (cachedMax <= 0)
+				cachedMax = 1;
 
-			if (GetPrime(_cachedMin, requireExpansion) != primetest && GetPrime(_cachedMax, requireExpansion) != primetest)
+			if (GetPrime(cachedMin, requireExpansion) != primetest && GetPrime(cachedMax, requireExpansion) != primetest)
 			{
 				#region Don't wait for filling primes if the primetest is possibly VERY large.
 				if (!requireExpansion && primetest > _threadPrimes[_threadPrimes.Count - 1])
@@ -614,58 +619,58 @@ namespace ProjectEuler.MathExtensions
 				}
 				#endregion
 
-				while (GetPrime(_cachedMin, requireExpansion) > primetest)
+				while (GetPrime(cachedMin, requireExpansion) > primetest)
 				{
-					bool decrementTypeSubtract = (_cachedMax <= _cachedMin + 3) && (_cachedMin >= 4);
-					_cachedMax = _cachedMin;
+					bool decrementTypeSubtract = (cachedMax <= cachedMin + 3) && (cachedMin >= 4);
+					cachedMax = cachedMin;
 					if (decrementTypeSubtract)
-						_cachedMin -= 4;
+						cachedMin -= 4;
 					else
-						_cachedMin >>= 1;
+						cachedMin >>= 1;
 				}
-				while (GetPrime(_cachedMax, requireExpansion) < primetest)
+				while (GetPrime(cachedMax, requireExpansion) < primetest)
 				{
-					bool incrementTypeAdd = (_cachedMax <= _cachedMin + 3) && (_cachedMax <= MAX_ADD);
-					_cachedMin = _cachedMax;
+					bool incrementTypeAdd = (cachedMax <= cachedMin + 3) && (cachedMax <= MAX_ADD);
+					cachedMin = cachedMax;
 					if (incrementTypeAdd)
-						_cachedMax += 4;
-					else if (_cachedMax <= MAX_SHIFT)
+						cachedMax += 4;
+					else if (cachedMax <= MAX_SHIFT)
 					{
-						if (_cachedMax > 8192 && (2 * _cachedMax > _primes.Count))
+						if (cachedMax > 8192 && (2 * cachedMax > _primes.Count))
 						{
-							if (_cachedMax + 8192 < _threadPrimes.Count)
-								_cachedMax = _threadPrimes.Count - 1;
+							if (cachedMax + 8192 < _threadPrimes.Count)
+								cachedMax = _threadPrimes.Count - 1;
 							else
-								_cachedMax = _cachedMax + 8192;
+								cachedMax = cachedMax + 8192;
 						}
 						else
 						{
-							_cachedMax *= 2;
+							cachedMax *= 2;
 						}
 					}
 					else
 					{
-						_cachedMax = int.MaxValue;
+						cachedMax = int.MaxValue;
 						break;
 					}
-					if (!requireExpansion && _cachedMax >= _threadPrimes.Count)
-						_cachedMax = _threadPrimes.Count - 1;
+					if (!requireExpansion && cachedMax >= _threadPrimes.Count)
+						cachedMax = _threadPrimes.Count - 1;
 				}
-				while (_cachedMax > _cachedMin + 1)
+				while (cachedMax > cachedMin + 1)
 				{
-					int test = (_cachedMin + _cachedMax) / 2;
+					int test = (cachedMin + cachedMax) / 2;
 					if (GetPrime(test, requireExpansion) <= primetest)
 					{
-						_cachedMin = test;
+						cachedMin = test;
 					}
 					if (GetPrime(test, requireExpansion) >= primetest)
 					{
-						_cachedMax = test;
+						cachedMax = test;
 					}
 				}
 			}
 
-			return GetPrime(_cachedMin, requireExpansion) == primetest || GetPrime(_cachedMax, requireExpansion) == primetest;
+			return GetPrime(cachedMin, requireExpansion) == primetest || GetPrime(cachedMax, requireExpansion) == primetest;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
