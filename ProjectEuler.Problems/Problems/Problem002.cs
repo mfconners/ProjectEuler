@@ -15,7 +15,7 @@ namespace ProjectEuler.Problems
 		protected override string CalculateSolution()
 		{
 			int i;
-			ulong sum = 0;
+			long sum = 0;
 
 			for (i = 2; Fibonacci.GetFibonacci(i) <= 4000000; i += 3)
 			{

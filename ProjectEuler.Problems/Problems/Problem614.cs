@@ -53,10 +53,13 @@ namespace ProjectEuler.Problems
 			for (int n = 1; n <= max_total; ++n)
 			{
 				P_sum += P[n];
-				P_sum %= modulo_base;
+				if (P_sum >= 4611686018281801902)
+				{
+					P_sum -= 4611686018281801902;
+				}
 			}
 
-			return P_sum.ToString();
+			return (P_sum % modulo_base).ToString();
 		}
 	}
 }

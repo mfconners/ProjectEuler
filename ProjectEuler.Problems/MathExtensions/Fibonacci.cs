@@ -10,17 +10,17 @@ namespace ProjectEuler.MathExtensions
 	internal static class Fibonacci
 	{
 		static private ReaderWriterLockSlim _accessFibonacci = new ReaderWriterLockSlim();
-		static private List<ulong> _fibonaccis = InitFibonacci();
+		static private List<long> _fibonaccis = InitFibonacci();
 
-		static private List<ulong> InitFibonacci()
+		static private List<long> InitFibonacci()
 		{
-			List<ulong> f = new List<ulong>();
+			List<long> f = new List<long>();
 			f.Add(1);
 			f.Add(1);
 			return f;
 		}
 
-		static public ulong GetFibonacci(int i)
+		static public long GetFibonacci(int i)
 		{
 			if (i >= _fibonaccis.Count)
 			{
@@ -31,7 +31,7 @@ namespace ProjectEuler.MathExtensions
 			}
 
 			_accessFibonacci.EnterReadLock();
-			ulong fib = _fibonaccis[i];
+			long fib = _fibonaccis[i];
 			_accessFibonacci.ExitReadLock();
 
 			return fib;
