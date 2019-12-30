@@ -6,7 +6,7 @@ namespace ProjectEuler.Problems
 {
 	class Problem694 : Problem
 	{
-		//public override string CorrectAnswer { get { return "???"; } }
+		public override string CorrectAnswer { get { return "1339784153569958487"; } }
 
 		private long S(long n, int min_p = 0, Dictionary<(long n, int min_p), long> S_cache = null)
 		{
