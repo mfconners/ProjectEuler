@@ -51,7 +51,7 @@ namespace ProjectEuler.MathExtensions
 			}
 		}
 
-		static public long GreatestCommonDivisor(int bigger, int smaller)
+		static public int GreatestCommonDivisor(int bigger, int smaller)
 		{
 			if (bigger < 0)
 				bigger = -bigger;
@@ -64,7 +64,7 @@ namespace ProjectEuler.MathExtensions
 					smaller = -smaller;
 			}
 
-			for (long remainder = bigger % smaller; remainder > 0; remainder = bigger % smaller)
+			for (int remainder = bigger % smaller; remainder > 0; remainder = bigger % smaller)
 			{
 				bigger = smaller;
 				smaller = remainder;
