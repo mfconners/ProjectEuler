@@ -272,17 +272,38 @@ namespace ProjectEuler.MathExtensions
 				++r;
 			}
 
-			if (n < 2047)
-			{
-				return Is_Miller_Rabin_ProbablePrime(2, d, r, n);
-			}
-			else if (n < 1373653)
-			{
-				return Is_Miller_Rabin_ProbablePrime(2, d, r, n)
-					&& Is_Miller_Rabin_ProbablePrime(3, d, r, n);
-			}
-			else
-				return Is_Miller_Rabin_Prime_Greater_Than_1373653(n, d, r);
+			//if (n < 2047)
+			//{
+			//	return Is_Miller_Rabin_ProbablePrime(2, d, r, n);
+			//}
+			//else if (n < 1373653)
+			//{
+			//	return Is_Miller_Rabin_ProbablePrime(2, d, r, n)
+			//		&& Is_Miller_Rabin_ProbablePrime(3, d, r, n);
+			//}
+			//else
+			//	return Is_Miller_Rabin_Prime_Greater_Than_1373653(n, d, r);
+			if (!Is_Miller_Rabin_ProbablePrime(2, d, r, n)) return false;
+			if (n < 2047) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(3, d, r, n)) return false;
+			if (n < 1373653) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(5, d, r, n)) return false;
+			if (n < 25326001) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(7, d, r, n)) return false;
+			if (n < 3215031751) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(11, d, r, n)) return false;
+			if (n < 2152302898747) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(13, d, r, n)) return false;
+			if (n < 3474749660383) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(17, d, r, n)) return false;
+			if (n < 341550071728321) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(19, d, r, n)) return false;
+			if (!Is_Miller_Rabin_ProbablePrime(23, d, r, n)) return false;
+			if (n < 3825123056546413051) return true;
+			if (!Is_Miller_Rabin_ProbablePrime(29, d, r, n)) return false;
+			if (!Is_Miller_Rabin_ProbablePrime(31, d, r, n)) return false;
+			if (!Is_Miller_Rabin_ProbablePrime(37, d, r, n)) return false;
+			return true;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -775,7 +796,7 @@ namespace ProjectEuler.MathExtensions
 				#endregion
 
 				Thread.MemoryBarrier();
-				if (threshold <= _primes.Count && (threshold = _maxIndex + 8 * (2 * 3 * 5 * 7 * 11)) <= _primes.Count)
+				if (threshold <= _primes.Count && (threshold = _maxIndex + 24 * (2 * 3 * 5 * 7 * 11)) <= _primes.Count)
 				{
 					_managePump.Wait();
 					if ((threshold = _maxIndex + 8 * (2 * 3 * 5 * 7 * 11)) <= _primes.Count)
